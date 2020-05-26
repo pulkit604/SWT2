@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Chatbot Manager</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Welcome to Chat Bot Manager</h1>
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>Insert Data Using csv</h3>
+      <input id="file" type="file" accept=".csv"/>
+      <button onclick="updateDB()">Update to DB</button>
+    </div>
+    <div class="col-sm-4 get_script" style="display:none;">
+      <h3>Generate Script</h3>
+      <button onclick="getScript()">get Chatbot Script</button>
+    </div>
+  </div>
+</div>
+<script>
+    var updateDB = function() {
+        var fd = new FormData();
+        var files = $('#file')[0].files[0];
+        fd.append('file',files);
+        
+        $.ajax({
+            url: 'update_to_db.php',
+            type: 'post',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function(ret){
+                if(ret){
+                    $(".get_script").show();
+                }else{
+                    alert('Couldn\'t get script');
+                }
+            },
+        });
+    }
+    var getScript = function(){
+        $.get('get_script.php', function(ret){window.location = 'bot.zip';});
+    }
+</script>
+</body>
+</html>
